@@ -176,6 +176,7 @@ if(Build.VERSION.SDK_INT >=23) {
 		Intent inent = new Intent(Setting.ACTION_MANAGER_OVERLAT_PERMISSION);
 		startActivity(intent);
 	}
+}
 ```
 
 　　**“通过将WindowManager.LayoutParams的type设置为TYPE_TOAST”，是否还管用？ **  
