@@ -179,7 +179,7 @@ if(Build.VERSION.SDK_INT >=23) {
 }
 ```
 
-　　**“通过将WindowManager.LayoutParams的type设置为TYPE_TOAST”，是否还管用？ **  
+　　**“通过将WindowManager.LayoutParams的type设置为TYPE_TOAST”，是否还管用？**  
 　　之前有人通过逆向的方法得出结论：[将WindowManager.LayoutParams的type设置为TYPE_TOAST，可以不申请SYSTEM_ALERT_WINDOW权限就可以显示悬浮窗](http://www.jianshu.com/p/634cd056b90c)，但是这种方法需要处兼容问题，比如：在MIUI下还是需要权限（同理其他ROM可能也会面临同样的问题），并且需要API level>=19（Android4.4）（老版本不响应触摸事件）。 具体的结论如下所示：  
 
 ```
