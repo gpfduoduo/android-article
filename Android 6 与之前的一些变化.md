@@ -1,9 +1,9 @@
-## Android 6.0的一些变化   
+## **Android 6.0的一些变化**  
 
  
 本文列出开发过程中遇到的一些Android6.0的变化
 
-1。 **<font size = 5>Mac地址的获取</font>**　　　
+**<font size = 5>1。 Mac地址的获取</font>**　　　
 
 
 　　android 6.0之前，通过WifiManager-WifiIno-getMacAddress()就可以获取到设备的ma地址
@@ -110,7 +110,7 @@
 
 
 
-2。  **<font size = 5>动态权限的申请</font>**
+**<font size = 5>2。  动态权限的申请</font>**
 
 　　Android 6.0之前，开发者只需要在AndroidManifesxt.xml中配置自己想要的权限就可以，当你安装应用程序的时候，会有一个页面提示你当前的应用需要你哪些权限。当前手机的ROM一般的都有管理应用程序权限的设置。  
 　　Android6 Google推出了动态权限的获取，如下危险的权限需要动态的症的用户的同意，比如：身体传感器、日历、摄像头、通讯录、地理位置、麦克风、电话、短信和存储空间。 Android6.0默认的为targetSdkVersion<23的应用程序默认授权了所申请的所有权限，所以如果你以前 APP设置的targetSdkVersion<23，在运行时也不会崩溃，但是这只是一个临时的救急策略。    
@@ -162,7 +162,8 @@
     }
 ```  
 
-3。  **<font size = 5>悬浮窗的处理</font>**  
+**<font size = 5>3。  悬浮窗的处理</font>**  
+
 　　Android 6.0之(这时候你的targetSdkVersion<23)，创建悬浮窗是需要申请权限：**android.permission.SYSTEM_ALERT_WINDOW**。 让后通过WindowManager就可以创建并显示一个悬浮窗（当前你必须授权该权限，MIUI这种Rom默认的是关闭的，需要在设置中打开）。  
 　　在Android6.0之后，如果你修改了targetSdkVersion为23（这个只能增大，不能变小回退）。  你再次通过WindowManager来创建悬浮窗，你的APP就直接崩溃了。  
 　　解决办法： 如果你将targetSdkVersion设置为23或者更高，在使用SYSTEM_ALERT_WINDOW权限是，需要先调用**Setting.canDrawOverlays()**来判断是否允许创建悬浮窗。允许直接创建；如果不允许需要发送一个action值为**ACTION_MANAGER_OVERLAY_PERMISSION**的Intent来让用户同意创建悬浮窗。 具体你代码如下所示：  
@@ -192,10 +193,12 @@ API level 18及以下使用TYPE_TOAST无法接收触摸事件的原因也找到�
 　　我们拿一个Android 6.0的手机(天机AXON)，经过测试（[demo](https://github.com/liaohuqiu/android-UCToast)）：**<font size = 5>是可以的</font>**   
 　　当然，最可靠的方案还是：**read  the fucking sourecode !!!**  
 
-4。 **<font size = 5>Apache HttpClient的移除</font>**   
+**<font size = 5>4。 Apache HttpClient的移除</font>**   
+  
 　　早在Android2.3 Android就建议使用HttpURLConnection来进行网络开发。而且Google退出的一些开源都是这么做的，如：Volley等。  
 
-5。 **<font size = 5>WiFi和网络变化</font>**  
+**<font size = 5>5。 WiFi和网络变化</font>**    
+
 　　1.  你的app智能修改自己的创建的WifiConfiguration对象的状态，不能修改其他App创建的WifiConfiguration对象。  
 　　2.  Android 6.0之前，你可以通过enableNetwork（），设置disableAllOthers = true
 ，来是的设备软开其他网络，如蜂窝网络，而强制连接指定的Wifi网络。此版本上设备将不会从其他网络断开。  

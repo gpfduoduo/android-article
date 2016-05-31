@@ -2,20 +2,24 @@
 
 平时开发遇到的问题总结，希望大家多提一些建议和添加相应内容
 
-1. [单个acticity+多个fragment or 多activity](Activity + 多Frament 使用时的一些坑.md)  
-早期的Android开发，由于没有Fragment的概念，因此每一个页面基本都是Activity。  
-Google从3.0开始引入了Fragment的概念，慢慢的单Activity + 多Fragment成为一种趋势。目前基本所有的主流应用都是这种模式。    
-但是Fragment的使用一直有一些问题，并不能让开发者得心应手的使用，因此也出现了[反对使用Fragment](https://corner.squareup.com/2014/10/advocating-against-android-fragments.html)的一些声音，有兴趣的可以看一下。
+**<font size = 5>1. [单个acticity+多个fragment or 多activity](Activity + 多Frament 使用时的一些坑.md) </font>**  
+　　早期的Android开发，由于没有Fragment的概念，因此每一个页面基本都是Activity。Google从3.0开始引入了Fragment的概念，慢慢的单Activity + 多Fragment成为一种趋势。目前基本所有的主流应用都是这种模式。    
+　　但是Fragment的使用一直有一些问题，并不能让开发者得心应手的使用，因此也出现了[反对使用Fragment](https://corner.squareup.com/2014/10/advocating-against-android-fragments.html)的一些声音，有兴趣的可以看一下。  
+ 　　本章节就是阐述了使用Fragment时需要注意的一些问题及其解决方法。
 
-2. [内存相关](内存的泄露和优化相关.md)  
+**<font size = 5>2. [内存相关](内存的泄露和优化相关.md)</font>**  
+　　Android为每一个app提供了一定大小的内存，如果你的应用超过了这个范围，就会出现OOM，或者当你接近这个内存的时候，就会引起大量的GC，从而导致UI卡顿，直接影响了用户的体验。  
+　　本章节主要阐述了内存泄露常见错误、内存的优化等知识。  
+
+**<font size = 5>3. [进程保活](进程保活机制.md)</font>**  
+　　本章节主要是阐述了目前常用的进程保活的主要机制。可以让你的app在系统中呆的时间更长，从而间接的提高了用户体验。
+
+**<font size = 5>4. [界面卡顿的优化](界面卡顿的优化.md)</font>**  
+　　当用户允许你开发的应用时，若经常出现莫名的卡顿，那么你这个应用距离被卸载已经不远了。本章节阐述了目前常见的一些卡顿错误处理以及怎样才能定位出你卡顿的地方，是什么原因导致你app的卡顿，最后阐述则那样可以有效的预防卡顿的发生。
 
 
-3. [进程保活](进程保活机制.md)
+**<font size = 5>5. [程序异常数据的丢失](程序异常数据的丢失.md)</font>**  
+　　当你的Rom内存较低的时候，Android就开始根据low meomory killer进行内存清理了，这时候如果你的app放在后台，很有可能就会被回收掉。但是经常是回收掉了你的页面资源，你的页面的栈管理没有被清除，这样就造成了一个现象：当你回到你的app时，你的界面控件内容都不见了。 这就是你没有对你的app做好异常数据丢失的处理，比如：onSaveInstanceState没有进行处理，你的Fragment页面出现了重叠等。 本章节就是阐述这个问题的处理。
 
-
-4. [界面卡顿的优化](界面卡顿的优化.md)
-
-
-5. [程序异常数据的丢失](程序异常数据的丢失.md)
-
-6. [Android 6.0与之前的一些变化](Android 6 与之前的一些变化.md)  
+**<font size = 5>6. [Android 6.0与之前的一些变化](Android 6 与之前的一些变化.md)**</font>  
+　　本章节主要阐述了Android6.0与之前的重点不同之处，特别是对于开发者来说，一些常用的变化。比如：mac地址的获取，悬浮窗、动态权限的申请等。
