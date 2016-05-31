@@ -6,7 +6,7 @@
 **<font size = 5>1。 Mac地址的获取</font>**　　　
 
 
-　　android 6.0之前，通过WifiManager-WifiIno-getMacAddress()就可以获取到设备的ma地址
+　　android 6.0之前，通过WifiManager-WifiInfo-getMacAddress()就可以获取到设备的mac地址
 
 ```
  public static String getWiFiMac(Context context)
