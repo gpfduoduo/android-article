@@ -56,7 +56,19 @@
   
 　　FragmentManager提供了remove方法用于Fragment的出栈，但是这个方法是有问题的。　
 
-<font size = 5>**5 。 Fragment与Fragment之间的数据传输**</font>  
+<font size = 5>**5 。 Fragment与Fragment之间的数据传输**</font>    
+  
+　　**Fragment与Activity通信**    
+　　尽管Fragment是独立于Activity的一个对象，但是Fragment可以通过getActivity()方法获取Activity的实例，并且可以很容易的执行比如查找Activity中View的任务。  
+　　同样的，Activity可以通过FragmentManager获取一个引用来调用Fragment中的方法，使用findFragmentByTag(), 获取findFragmentById();　
+
+　　**Fragment之间的通信**  
+　　在Activity中存在startActivityForResult方法，其实在Fragment中可以自定义这样的方法，来实现Fragment之间的通信。  
+
+```
+
+```
+
 
 <font size = 5>**6 。 Fragment栈内容的查看**</font>  
 
