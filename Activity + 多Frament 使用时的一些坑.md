@@ -72,4 +72,16 @@
 
 <font size = 5>**6 。 Fragment栈内容的查看**</font>  
 
+　　通过FragmentManager可以查看Activity作为容器下的Fragment。  
+
+```
+List<Fragment> fragmentList = mActivity.getSupportFragmentManager().getFragments();
+```
+　　通过Fragment的getChildFragmentManager可以查看Fragment作为容器下的Fragment  
+
+```
+List<Fragment> fragmentList = parentFragment.getChildFragmentManager().getFragments();
+```
+　　通过查看Fragment的栈关系就可以知道自己的程序是不是出现错误，有没有内存泄露的风险等。  
+
 <font size = 5>**7 。 **</font>  
