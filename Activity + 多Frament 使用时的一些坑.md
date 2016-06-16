@@ -54,7 +54,27 @@
 
 <font size = 5>**4 。 Frament的出栈**</font>  
   
-　　FragmentManager提供了remove方法用于Fragment的出栈，但是这个方法是有问题的。　
+　　FragmentManager提供了remove方法用于Fragment的出栈，但是这个方法是有问题的。  
+　　如下面的代码所示：我添加了两个Fragment到Activity容器中，当用户点击back按键的时候，我通过如下方法进行出栈操作，你会发现：getBackStackEntryCount()方法永远都是返回2个。但是通过日志你客可看到你的两个Fragment的onDetac方法都被调用了。
+
+```
+public void onBackPressed() {
+        int count = mFragmentManager.getBackStackEntryCount();
+        Log.d(tag, "fragment count = " + count);
+        if (count > 0) {
+            String tag = mFragmentManager.getBackStackEntryAt(count - 1).getName();
+            Fragment fragment = mFragmentManager.findFragmentByTag(tag);
+            FragmentTransaction ft = mFragmentManager.beginTransaction().remove(fragment);
+            ft.commit();
+            //mFragmentManager.popBackStack();
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
+```
+
+ 　　如上所示，正确的使用方法是调用popBackStack系列函数。  
 
 <font size = 5>**5 。 Fragment与Fragment之间的数据传输**</font>    
   
