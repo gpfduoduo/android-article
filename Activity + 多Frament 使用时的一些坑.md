@@ -89,7 +89,29 @@ public void onBackPressed() {
 
 　　Android总共提供了6个popBackStack()系列函数，区别如下：  
 　　a、前两个函数用户单个Fragment的出栈，后面四个用户多个Fragments的出栈；  
-　　b、popBackStack和popBackStackImmediate的区别在于前者是加入到主线队列的末尾，等其它任务完成后才开始出栈，后者是立刻出栈。    
+　　b、popBackStack和popBackStackImmediate的区别在于前者是加入到主线队列的末尾，等其它任务完成后才开始出栈，后者是立刻出栈。正因为有了popBackStack和popBackStackImmediate的这个区别，所有在调用的时候就需要格外的注意:  
+　　如果你在调动popBackStackImmediate之后紧接着调用类似如下的事物方法，会导致内存重启后按返回键报错的问题：
+
+```
+getSupportFragmentManager().popBackStackImmdiate();
+getSupportFragmentManager().beginTransaction()
+        .add(R.id.container, fragment , tag)
+        .hide(currentFragment)
+        .commit;
+```
+
+　　正确的使用方法如下所示：
+
+```
+getSupportFragmentManager().popBackStackImmdiate();
+new Handler().post(new Runnable(){
+          @Override
+           public void run() {
+                // 在这里执行Fragment事务
+           }
+});
+```
+
 
 
 <font size = 5>**6 。 Fragment与Fragment/Activity之间的数据传输**</font>    
