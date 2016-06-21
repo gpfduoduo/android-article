@@ -89,8 +89,11 @@ public void onBackPressed() {
 
 　　Android总共提供了6个popBackStack()系列函数，区别如下：  
 　　a、前两个函数用户单个Fragment的出栈，后面四个用户多个Fragments的出栈；  
-　　b、popBackStack和popBackStackImmediate的区别在于前者是加入到主线队列的末尾，等其它任务完成后才开始出栈，后者是立刻出栈。正因为有了popBackStack和popBackStackImmediate的这个区别，所有在调用的时候就需要格外的注意:  
-　　如果你在调动popBackStackImmediate之后紧接着调用类似如下的事物方法，会导致内存重启后按返回键报错的问题：
+　　b、popBackStack和popBackStackImmediate的区别在于前者是加入到主线队列的末尾，等其它任务完成后才开始出栈，后者是立刻出栈。  
+
+ 　　**Fragment事物和动画的问题**  
+　　如果你在调动popBackStackImmediate之后紧接着调用类似如下的事物方法，此时如果出栈动画还没有完成，会导致内存重启后按返回键报错的问题：
+
 
 ```
 getSupportFragmentManager().popBackStackImmdiate();
@@ -100,7 +103,7 @@ getSupportFragmentManager().beginTransaction()
         .commit;
 ```
 
-　　正确的使用方法如下所示：
+　　正确的使用方法如下所示，使用主线程的Handler：
 
 ```
 getSupportFragmentManager().popBackStackImmdiate();
@@ -111,7 +114,7 @@ new Handler().post(new Runnable(){
            }
 });
 ```
-
+　　**需要注意的是：假如你的Fragment没有设置任何的动画，那么上面的问题是不存在的。**  
 
 
 <font size = 5>**6 。 Fragment与Fragment/Activity之间的数据传输**</font>    
@@ -183,4 +186,5 @@ List<Fragment> fragmentList = fragment.getChildFragmentManager().getFragments();
 
 　　通过查看Fragment的栈关系就可以知道自己的程序是不是出现错误，有没有内存泄露的风险等。  
 
-<font size = 5>**8 。 **</font>  
+<font size = 5>**8 。懒加载技术 **</font>    
+
