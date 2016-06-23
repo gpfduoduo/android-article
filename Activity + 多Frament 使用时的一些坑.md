@@ -20,9 +20,13 @@
 
 　　若你使用add(), show(), hide()方法进行Fragment的控制，当你将程序放在后台，多一段时间，会发现出现了问题：你的几个Fragment界面发生了重叠。  
 　　**原因：**　  
-　　出现了内存回收，怎样复现这个场景呢？见“[程序异常数据的丢失](程序异常数据的丢失.md)”。当出现内存回收，系统通过FragmentManager会保存他的Fragments（具体的你可以通过FragmentManager的getFragments()打印查看，FragmentManager会保存app被回收前的 Fragment），再次启动进入系统会从栈底向栈顶的顺序恢复Fragments，并且每一个恢复的Fragment都是以show()的方式显示出来，从而导致界面的重叠。  
+　　系统在页面重启前，帮我们保存了Fragment的状态，但是在重启后恢复时，视图的可见状态没帮我们保存，而Fragment默认的是show状态。这样就导致了再次启动进入系统会从栈底向栈顶的顺序恢复Fragments，并且每一个恢复的Fragment都是以show()的方式显示出来，从而导致界面的重叠。  
+
 　　**解决办法：**  
-　　在add(), replace()的时候，绑定一个tag（一般都是使用Fragment的类名），发生内存重启的时候，通过findFragmentByTag找到对应的Fragment，并hide掉需要隐藏的Fragment(可以在Activity的onSaveInstance中保存需要显示的Fragment的tag值)。  
+　　FragmentManager在任何情况都会帮你存储Fragment，你要做的仅仅是在“内存重启”后，找回这些Fragment即可。  
+
+　　**1）通过findFragmentByTag**   
+　　在add Fragment的时候，绑定一个tag（一般都是使用Fragment的类名），发生内存重启的时候，通过findFragmentByTag找到对应的Fragment，并hide掉需要隐藏的Fragment(可以在Activity的onSaveInstance中保存需要显示的Fragment的tag值)。  
 
 ```
 @Overrideprotected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +54,41 @@
                 .commit();
     }
 }
+```  
+　　**2）通过Fragment自身的saveInstanceState**  
+　　Fragment像Activity一样，可以通过onSaveInstanceState来保存序列化的数据，以防止程序突然丢失数据（内存重启）。具体的通过onSaveInstanceState来实现防止Fragment重叠的方法如下所示： 
+
+```  
+ @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            mIsHidden = savedInstanceState.getBoolean(FragmentOpe.FRAGMENT_SAVE_STATE_HIDDEN);
+            processRestoreState();
+        }
+    }
+
+ @Override public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(FragmentOpe.FRAGMENT_SAVE_STATE_HIDDEN, isHidden());
+    }
+
+
+    private void processRestoreState() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if (mIsHidden) {
+            ft.hide(this);
+        }
+        else {
+            ft.show(this);
+        }
+        ft.commit();
+    }
 ```
-  
-  
+
+　　**方式1和的2区别是：由Activity/父Fragment来管理子Fragment的显示/隐藏状态转变为由Fragment自己来管理自己的显示/隐藏状态。**  
+
+   
 <font size = 5>**4 。 Frament的出栈remove的使用问题**</font>  
   
 　　FragmentManager提供了remove方法用于Fragment的出栈，但是这个方法是有问题的。    
@@ -316,5 +352,14 @@ List<Fragment> fragmentList = fragment.getChildFragmentManager().getFragments();
 
 　　通过查看Fragment的栈关系就可以知道自己的程序是不是出现错误，有没有内存泄露的风险等。  
 
-<font size = 5>**9 。懒加载技术 **</font>    
+<font size = 5>**9 。懒加载（延迟加载）技术 **</font>    
 
+　　我们在做应用开发的时候，如果你的activity里可能会用到多个Fragment。如果每个Fragment都需要去加载数据资源（from本地或者network），那么这个Activity在创建的时候需要初始化大量的资源。正确的做法应该是当切换到这个Fargment的时候，采取初始化。  
+　　实现方法就是 
+
+
+
+<font size = 5>**10 。防止多次点击加载Fragment **</font>   
+
+
+<font size = 5>**11 。onBackPressed的使用 **</font>  
