@@ -1,6 +1,6 @@
 # **Activity + 多Fragment的一些坑** 
 
-　　目前单个（多个）Activity + 多个Fragment已经成为主流APP的页面呈现方式，例如：微信、今日头条等。下面就阐述一下Activity + 多个Fragment的使用过程中的一些问题和经验教训。**需要注意的是：本文说讲的Fragment都是support.v4下的Fragment**。
+　　目前单个（多个）Activity + 多个Fragment已经成为主流APP的页面呈现方式，例如：微信、今日头条等。下面就阐述一下Activity + 多个Fragment的使用过程中的一些问题和经验教训。**需要注意的是：本文说讲的Fragment都是support.v4下的Fragment，具体的 support-v4-23.1.1**。
 
 <font size = 5>**1 。 getActivity() = null**</font>  
 
