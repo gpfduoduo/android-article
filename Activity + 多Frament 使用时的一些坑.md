@@ -337,29 +337,29 @@ public class MainActivity extends AppCompatActivity implements FragmentDemo.OnCo
 
 　　每个Fragment以及容器Activiy都会在创建时初始化一个FragmentManager对象。  
 
-　　**a. ** 对于容器Activity，通过FragmentManager可以查看Activity作为容器的Fragment。  
+　　**a.** 对于容器Activity，通过FragmentManager可以查看Activity作为容器的Fragment。  
 
 ```
 List<Fragment> fragmentList = mActivity.getSupportFragmentManager().getFragments();
 ```
-　　**b.  ** 对于容器Fragment，通过Fragment的getChildFragmentManager可以查看Fragment作为容器的FragmentManager对象  
+　　**b.** 对于容器Fragment，通过Fragment的getChildFragmentManager可以查看Fragment作为容器的FragmentManager对象  
 
 ```
 List<Fragment> fragmentList = fragment.getChildFragmentManager().getFragments();
 ```
 
-　　**c. ** 对于容器Fragment，通过getFragmentManager是获取的父Fragment（若没有，获取的是Activity容器）的FragmentManager对象。  
+　　**c.** 对于容器Fragment，通过getFragmentManager是获取的父Fragment（若没有，获取的是Activity容器）的FragmentManager对象。  
 
 　　通过查看Fragment的栈关系就可以知道自己的程序是不是出现错误，有没有内存泄露的风险等。  
 
-<font size = 5>**9 。懒加载（延迟加载）技术 **</font>    
+<font size = 5>**9 。懒加载（延迟加载）技术**</font>    
 
 　　我们在做应用开发的时候，如果你的activity里可能会用到多个Fragment。如果每个Fragment都需要去加载数据资源（from本地或者network），那么这个Activity在创建的时候需要初始化大量的资源。正确的做法应该是当切换到这个Fargment的时候，采取初始化。  
 　　实现方法就是 
 
 
 
-<font size = 5>**10 。防止多次点击加载Fragment **</font>   
+<font size = 5>**10 。防止多次点击加载Fragment**</font>   
 
 
-<font size = 5>**11 。onBackPressed的使用 **</font>  
+<font size = 5>**11 。onBackPressed的使用**</font>  
