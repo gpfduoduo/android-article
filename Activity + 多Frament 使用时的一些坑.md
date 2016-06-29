@@ -354,12 +354,14 @@ List<Fragment> fragmentList = fragment.getChildFragmentManager().getFragments();
 
 <font size = 5>**9 。懒加载（延迟加载）技术**</font>    
 
-　　我们在做应用开发的时候，如果你的activity里可能会用到多个Fragment。如果每个Fragment都需要去加载数据资源（from本地或者network），那么这个Activity在创建的时候需要初始化大量的资源。正确的做法应该是当切换到这个Fargment的时候，采取初始化。  
-　　实现方法就是 
+　　我们在做应用开发的时候，如果你的activity里可能会用到多个Fragment，比如微信的首页有四个Fragment。如果每个Fragment都需要去加载数据资源（from本地或者network），那么这个Activity在创建的时候需要初始化大量的资源。正确的做法应该是当切换到这个Fargment的时候，采取初始化。  
+　　
 
 
 
 <font size = 5>**10 。防止多次点击加载Fragment**</font>   
+  
+　　问题的背景是这样的，有时候你会一个按钮点击了两次，导致Fragment被加载了两次，这样就会造成Fragment的重叠。这样子肯定是开发者和用户都不愿意看到的。如何加爵这个问题呢？
 
 
 <font size = 5>**11 。onBackPressed的使用**</font>  
