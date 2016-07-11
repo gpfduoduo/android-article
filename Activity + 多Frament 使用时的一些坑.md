@@ -355,13 +355,51 @@ List<Fragment> fragmentList = fragment.getChildFragmentManager().getFragments();
 <font size = 5>**9 。懒加载（延迟加载）技术**</font>    
 
 　　我们在做应用开发的时候，如果你的activity里可能会用到多个Fragment，比如微信的首页有四个Fragment。如果每个Fragment都需要去加载数据资源（from本地或者network），那么这个Activity在创建的时候需要初始化大量的资源。正确的做法应该是当切换到这个Fargment的时候，采取初始化。  
-　　
+　　以实际实现微信主页UI的为例实现懒加载：  
+　　在本次处理中我们将微信的几个主页面都加在出来，并且通过show hide接口控制，仅仅让一个界面显示出来。具体的如下所示：  
+
+```
+ FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
+        for (int i = 0; i < fragments.length; i++) {
+            BaseFragment fragment = fragments[i];
+            if (fragment == null) {
+                throw new IllegalArgumentException(
+                        "loadMultipleFragments fragment in list can not be null ");
+            }
+            String tag = fragment.getClass().getName();
+            ft.add(containerId, fragment, tag);
+            if (showPos != i) { //showPos为我们需要显示的Fragment
+                ft.hide(fragment);
+            }
+        }
+        ft.commit();
+```
+　　Fragment的加载时的生命周期为：onAttach-onCreate-onCreateView-onActivityCreated。我们可以在onActivityCreated真判断当前的Fragment是否已为Hidden，如果不为Hidden，我们就可以加载Fragment。  
 
 
+```
+ if (!isHidden()) {
+                init(null);
+            }
+```
+　　当用户点击Tab也进行切换的时候，之前家加载过（之前可能是show也可能是hide状态）的Fragment会调用onHiddenChanged接口。我们就可以在这个接口中进行懒加载：  
 
+```
+ public abstract void initLazyView(Bundle saveInstanceState);
+ public void init(Bundle saveInstanceState) {
+        initLazyView(saveInstanceState);
+    }
+```
+
+
+  
 <font size = 5>**10 。防止多次点击加载Fragment**</font>   
   
-　　问题的背景是这样的，有时候你会一个按钮点击了两次，导致Fragment被加载了两次，这样就会造成Fragment的重叠。这样子肯定是开发者和用户都不愿意看到的。如何加爵这个问题呢？
+　　问题的背景是这样的，有时候你会一个按钮点击了两次，导致Fragment被加载了两次，这样就会造成Fragment的重叠。这样子肯定是开发者和用户都不愿意看到的。如何解决这个问题呢？  
+　　解决的方法很多：你可以使用RxJava等第三方的开源库进行处理。你也可以进行封装处理。 
 
 
-<font size = 5>**11 。onBackPressed的使用**</font>  
+<font size = 5>**11 。onBackPressed的封装和使用**</font>    
+
