@@ -402,4 +402,43 @@ List<Fragment> fragmentList = fragment.getChildFragmentManager().getFragments();
 
 
 <font size = 5>**11 。onBackPressed的封装和使用**</font>    
+　　我们都知道Fragment是不会相应onBackPressed接口的，只有Activity才可以。那么我们就需要在Activity的onBackPressed中进行相应的逻辑处理：  
+
+
+```
+ private void handleBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            getSupportFragmentManager().popBackStack();
+        }
+        else {
+            finish();
+        }
+    }
+```
+　　在onBackPressed中调用上面的实现就可以。但是上面只是实现了出栈。如果你在某一个Fragment中需要进行回退时的逻辑处理，你需要判断你的Fragment是否支持BackPress。 　　
+
+```
+ public boolean onBackPressedSupport() {
+        return false;
+    }
+
+```
+
+　　然后在你的Activity的onBackPressed中这样实现：  
+
+```
+ @Override public void onBackPressed() {
+
+        BaseFragment frontFragment = mFragmentUtil.getActiveFragment(null,
+                getSupportFragmentManager()); //获取栈顶部的Fragment
+
+        Log.d(tag, "onBackPressed fragment = " + frontFragment.getTag());
+
+        if (dispatchBackPressedEvent(frontFragment)) {//判断Fragment是否支持BackPressed
+            return;
+        }
+        handleBackPressed(); //出栈
+    }
+```
+　　首先获取栈顶的Fragment，然后以判断Fragment是否支持onBackPressedSupport，如果支持进行自己 Fragment内部逻辑处理，否则执行Fragment的出栈操作
 
